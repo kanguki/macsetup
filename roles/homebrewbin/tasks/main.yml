@@ -1,0 +1,23 @@
+---
+- name: installs Homebrew packages
+  homebrew:
+    name: 
+    - git
+    - npm
+    - node
+    - vim
+    - tmux
+    - lua
+    - imagemagick
+    - docker
+    - colima
+    - go
+    - mercurial
+    state: present
+
+- name: installs Homebrew cask packages
+  homebrew_cask:
+    name:
+    - visual-studio-code
+    - karabiner-elements
+

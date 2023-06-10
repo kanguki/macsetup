@@ -1,0 +1,17 @@
+---
+- name: Check if .gvm exists
+  stat:
+    path: $HOME/.gvm
+  register: gvm_dir
+
+- name: install gvm
+  command: bash -c "curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | bash"
+  when: not gvm_dir.stat.exists
+
+- name: install a go version
+  command: bash -c "gvm install {{ go_version }}"
+
+- name: set default go version
+  shell: |
+    [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm" && gvm use {{ go_version }} --default
+

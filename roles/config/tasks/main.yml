@@ -1,0 +1,31 @@
+- name: make sure .config/karabiner exists
+  file:
+    path: $HOME/.config/karabiner
+    state: directory
+
+- name: config karabiner.json
+  template:
+    src: karabiner.json.j2
+    dest: $HOME/.config/karabiner/karabiner.json
+
+- name: config .tmux.conf
+  template:
+    src: .tmux.conf.j2
+    dest: $HOME/.tmux.conf
+
+- name: vimrc
+  template:
+    src: .vimrc.j2
+    dest: $HOME/.vimrc
+
+- name: make sure .vscode exists
+  file:
+    path: $HOME/.vscode
+    state: directory
+
+- name: config vscode.json
+  template:
+    src: vscode.settings.json.j2
+    dest: $HOME/.vscode/settings.json
+
+

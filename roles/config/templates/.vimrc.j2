@@ -1,0 +1,163 @@
+call plug#begin("~/.vim/plugged")
+  " Theme
+  Plug 'dracula/vim'
+
+  " Language Client
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-eslint', 'coc-pyright', 'coc-go']
+  " TypeScript Highlighting
+  Plug 'leafgarland/typescript-vim'
+  Plug 'peitalin/vim-jsx-typescript'
+
+  " File Explorer with Icons
+  Plug 'preservim/nerdtree'
+  Plug 'ryanoasis/vim-devicons'
+
+  " File Search
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
+  Plug 'vim-syntastic/syntastic'
+call plug#end()
+
+" Enable theming support
+if (has("termguicolors"))
+ set termguicolors
+endif
+
+" Theme
+syntax enable
+"colorscheme dracula
+"colorscheme koehler
+"let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+"let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Toggle
+nnoremap ,, viW
+nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <C-p> :FZF<CR>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit'
+  \}
+" requires silversearcher-ag
+" used to ignore gitignore files
+let $FZF_DEFAULT_COMMAND=""
+
+" open new split panes to right and below
+set splitright
+set splitbelow
+
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+
+" use alt+hjkl to move between split/vsplit panels
+"tnoremap <A-h> <C-\><C-n><C-w>h
+"tnoremap <A-j> <C-\><C-n><C-w>j
+"tnoremap <A-k> <C-\><C-n><C-w>k
+"tnoremap <A-l> <C-\><C-n><C-w>l
+"nnoremap <A-h> <C-w>h
+"nnoremap <A-j> <C-w>j
+"nnoremap <A-k> <C-w>k
+"nnoremap <A-l> <C-w>l
+" navigate between tabs in vim //open new tab with NERDTree by t or T, goto tabs by gt (forward) or gT (backward)
+map <A-Right> :tabn<CR>    " tabnext (== gt)
+map <A-Left> :tabp<CR>    " tabprevious (==gT)
+nmap <silent> <C-Up> :wincmd k<CR>
+nmap <silent> <C-Down> :wincmd j<CR>
+nmap <silent> <C-Left> :wincmd h<CR>
+nmap <silent> <C-Right> :wincmd l<CR>
+
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+" make vim remember last position
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+" open terminal on ctrl+;
+" uses zsh instead of bash
+function! OpenTerminal()
+  split term://bash
+  resize 10
+endfunction
+"nnoremap <c-n> :call OpenTerminal()<CR>
+
+set invrelativenumber
+set number
+"diable warning of coc_disable_startup_warning
+let g:coc_disable_startup_warning = 1
+set nobackup
+set nowritebackup
+set mouse=a
+vnoremap <Space> "+y<CR>
+"nmap <silent> <c-b> <Plug>(coc-definition)
+nmap <silent> <c-b> :call CocAction('jumpDefinition', 'tabe')<CR>
+nnoremap <C-LeftMouse> :call CocAction('jumpDefinition', 'tabe')<CR>
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+set updatetime=100
+autocmd CursorHold * silent call CocActionAsync('highlight')
+inoremap <expr><S-TAB> pumvisible() ? "\<C-n>" : "\<C-h>"
+"C-n: pick the highest in recommendations. C-p: pick the lowest
+imap <c-c> <esc>
+imap <c-\> <esc>
+nmap [c <Plug>(coc-git-prevconflict)
+nmap ]c <Plug>(coc-git-nextconflict)
+highlight DiffText cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+set wrap
+
+"inoremap <silent><expr> <TAB> pumvisible() ? coc#select_confirm() : "\<C-g>u\<TAB>"
+":.+1,$tabdo :q
+"let g:coc_disable_startup_warning = 1
+"set linespace=3
+"set nobackup
+"set nowritebackup
+""let g:typescript_indent_disable = 1
+"" CoC extensions
+"let g:coc_global_extensions = ['coc-tsserver']
+"" map space to copy to clipboard
+"map <Space> "+y<CR>
+""map F9 to toggle NERDTree
+"nmap <F9> :NERDTreeToggle<CR>
+"" map jj to escape insert mode
+"imap jj <esc>
+"" navigate between tabs in vim //open new tab with NERDTree by t or T, goto tabs by gt (forward) or gT (backward)
+"map <A-Right> :tabn<CR>    " tabnext (== gt)
+"map <A-Left> :tabp<CR>    " tabprevious (==gT)
+"map <C-n> :tabnew<CR>
+"" GoTo code navigation.
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+"
+"nmap <leader>rn <Plug>(coc-rename)
+"nmap <leader>ac  <Plug>(coc-codeaction)
+"set updatetime=300
+"" Highlight the symbol and its references when holding the cursor.
+"autocmd CursorHold * silent call CocActionAsync('highlight')
+"
+"" :CocInstall coc-tsserver coc-eslint coc-json
+"
+""references
+"" https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim   -- install CocVim
+"" https://github.com/neoclide/coc.nvim
+"" https://github.com/preservim/nerdtree
+"" https://github.com/leafgarland/typescript-vim
+" first install plug manager for vim
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" then try open vim , if nothing happens, go :PlugInstall
+" # : goto previous occurence of word under cursor
+" * :  goto next occurence of word under cursor
+"  z<Enter> = zt
+"  z- = redraw screen -> move current line under cursor to bottom
+"  z. =  redraw screen -> move current line under cursor to middle
+"  NUMBER% : goto NUMBER % of screen . you can type 50% and zt.  -> tada now u are at the middle of screen
+"  NUMBER| : go to position NUMBERth of current line
+"  :goto NUMBER                 -> goto postion NUMBERth from start of file
+"  vim +143 <file_name> vim +/search-term <file_name>  vim +?search-term <file_name>
+
