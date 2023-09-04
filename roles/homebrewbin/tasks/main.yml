@@ -17,6 +17,7 @@
     - broot
     - tig
     - rg
+    - cloudflare-warp
     state: present
 
 - name: installs Homebrew cask packages
