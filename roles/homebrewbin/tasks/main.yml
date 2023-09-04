@@ -13,6 +13,10 @@
     - colima
     - go
     - mercurial
+    - helix
+    - broot
+    - tig
+    - rg
     state: present
 
 - name: installs Homebrew cask packages
@@ -20,4 +24,5 @@
     name:
     - visual-studio-code
     - karabiner-elements
+    - wezterm
 

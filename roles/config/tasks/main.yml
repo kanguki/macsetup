@@ -18,6 +18,9 @@
     src: .vimrc.j2
     dest: $HOME/.vimrc
 
+- name: install vim plugins
+  command: vim +PlugInstall +qall
+
 - name: make sure .vscode exists
   file:
     path: $HOME/.vscode
